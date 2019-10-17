@@ -36,7 +36,8 @@ public class RestVerticle extends AbstractVerticle {
         Context context = consumer.consume();
         eventManager.handleEvent(context).setHandler(ar -> {
             if (ar.failed()) {
-                //todo LOGGER
+                // todo LOGGER
+                // todo publish ERROR event
             } else {
                 Context contextToPublish = ar.result();
                 if (contextToPublish != null) {
