@@ -16,7 +16,6 @@ public class RecursiveEventProcessor implements EventProcessor {
 
     @Override
     public Future<Context> process(Context context) {
-        context.setHandled(false);
         return processEventRecursively(context);
     }
 
@@ -38,6 +37,7 @@ public class RecursiveEventProcessor implements EventProcessor {
                 }
             });
         } else {
+            context.setHandled(false);
             future.complete(context);
         }
         return future;
