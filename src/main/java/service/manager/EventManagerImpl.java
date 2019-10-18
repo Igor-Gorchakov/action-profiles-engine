@@ -25,7 +25,7 @@ public class EventManagerImpl implements EventManager {
                 future.fail(firstAr.cause());
             } else {
                 if (context.isHandled()) {
-                    future.complete(prepareLastContext(context));
+                    future.complete(prepareContext(context));
                 } else {
                     future.complete();
                 }
@@ -34,7 +34,7 @@ public class EventManagerImpl implements EventManager {
         return future;
     }
 
-    private Context prepareLastContext(Context context) {
+    private Context prepareContext(Context context) {
         ProfileSnapshotWrapper snapshotWrapper = context.getProfileSnapshot();
         List<String> currentNodePath = context.getCurrentNodePath();
         Optional<ProfileSnapshotWrapper> optionalNextNode = findSnapshotWrapperByPath(snapshotWrapper, currentNodePath);
