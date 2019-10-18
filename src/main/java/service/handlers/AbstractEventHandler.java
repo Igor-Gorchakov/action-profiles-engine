@@ -9,14 +9,14 @@ public abstract class AbstractEventHandler implements EventHandler {
     public Future<Context> handle(Context context) {
         Future<Context> future = Future.future();
         handleContext(context)
-                .compose(nextContext -> Future.succeededFuture(prepareNextContext(nextContext)))
+                .compose(nextContext -> Future.succeededFuture(prepareForNextHandler(nextContext)))
                 .setHandler(future);
         return future;
     }
 
     protected abstract Future<Context> handleContext(Context context);
 
-    protected Context prepareNextContext(Context context) {
+    protected Context prepareForNextHandler(Context context) {
         context.setEventType(getNextEventType());
         context.getEventChain().add(getEventType());
         return context;

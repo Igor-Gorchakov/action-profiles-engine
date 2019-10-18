@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Context {
+    private boolean handled;
     private String eventType;
     private ProfileSnapshotWrapper profileSnapshot;
     private ProfileSnapshotWrapper currentNode;
@@ -27,6 +28,14 @@ public class Context {
     }
 
     public Context() {
+    }
+
+    public boolean isHandled() {
+        return handled;
+    }
+
+    public void setHandled(boolean handled) {
+        this.handled = handled;
     }
 
     public String getEventType() {
