@@ -17,7 +17,7 @@ public class EventProcessorImpl implements EventProcessor {
     @Override
     public Future<Context> process(Context context) {
         Future<Context> future = Future.future();
-        String eventType = context.get("eventType");
+        String eventType = context.getEventType();
         Optional<EventHandler> optionalEventHandler = eventHandlers.stream()
                 .filter(eventHandler -> eventHandler.getEventType().equals(eventType))
                 .findFirst();

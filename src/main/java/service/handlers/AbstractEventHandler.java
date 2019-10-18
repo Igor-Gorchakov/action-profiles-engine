@@ -17,15 +17,8 @@ public abstract class AbstractEventHandler implements EventHandler {
     protected abstract Future<Context> handleContext(Context context);
 
     protected Context prepareNextContext(Context context) {
-        try {
-            context.getObjects().replace("eventType", getNextEventType());
-            String eventChain = context.get("eventChain");
-            eventChain.concat("." + getEventType());
-            context.getObjects().replace("eventChain", eventChain);
-            return context;
-        } catch (Exception e) {
-            // LOGGER
-            return context;
-        }
+        context.setEventType(getNextEventType());
+        context.getEventChain().add(getEventType());
+        return context;
     }
 }

@@ -1,15 +1,12 @@
 package service.manager;
 
 import io.vertx.core.Future;
-import io.vertx.core.json.Json;
 import model.events.Context;
 import model.profiles.ProfileSnapshotWrapper;
 import service.handlers.EventHandler;
 import service.processor.EventProcessor;
 import service.processor.EventProcessorImpl;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -67,14 +64,14 @@ public class EventManagerImpl implements EventManager {
     }
 
     private Context prepareLastContext(Context context) {
-        ProfileSnapshotWrapper snapshotWrapper = Json.decodeValue(context.get("profileSnapshot"), ProfileSnapshotWrapper.class);
-        List<String> currentNodePath = new ArrayList(Arrays.asList(context.get("currentNodePath").split("\\.")));
+        ProfileSnapshotWrapper snapshotWrapper = context.getProfileSnapshot();
+        List<String> currentNodePath = context.getCurrentNodePath();
         Optional<ProfileSnapshotWrapper> optionalNextNode = findSnapshotWrapperByPath(snapshotWrapper, currentNodePath);
         if (optionalNextNode.isPresent()) {
             ProfileSnapshotWrapper nextNode = optionalNextNode.get();
-            context.getObjects().replace("currentNode", " ");
+            context.setCurrentNode(nextNode);
             currentNodePath.add(nextNode.getId());
-            context.getObjects().replace("currentNodePath", currentNodePath.toString());
+            context.setCurrentNodePath(currentNodePath);
             return context;
         } else {
             // No next node, all profiles are processed, nothing to publish
