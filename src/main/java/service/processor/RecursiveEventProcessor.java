@@ -23,7 +23,8 @@ public class RecursiveEventProcessor implements EventProcessor {
                 .findFirst();
         if (optionalEventHandler.isPresent()) {
             context.setHandled(true);
-            processEventRecursively(context).setHandler(future);
+            EventHandler nextEventHandler = optionalEventHandler.get();
+            processEventRecursively(context, nextEventHandler).setHandler(future);
         } else {
             context.setHandled(false);
             future.complete(context);
@@ -31,25 +32,24 @@ public class RecursiveEventProcessor implements EventProcessor {
         return future;
     }
 
-    private Future<Context> processEventRecursively(Context context) {
+    private Future<Context> processEventRecursively(Context context, EventHandler eventHandler) {
         Future<Context> future = Future.future();
-        String eventType = context.getEventType();
-        Optional<EventHandler> optionalEventHandler = eventHandlers.stream()
-                .filter(eventHandler -> eventHandler.getEventType().equals(eventType))
-                .findFirst();
-        if (optionalEventHandler.isPresent()) {
-            EventHandler eventHandler = optionalEventHandler.get();
-            eventHandler.handle(context).setHandler(ar -> {
-                if (ar.failed()) {
-                    future.fail(ar.cause());
+        eventHandler.handle(context).setHandler(ar -> {
+            if (ar.failed()) {
+                future.fail(ar.cause());
+            } else {
+                String eventType = context.getEventType();
+                Optional<EventHandler> optionalEventHandler = eventHandlers.stream()
+                        .filter(nextEventHandler -> nextEventHandler.getEventType().equals(eventType))
+                        .findFirst();
+                if (optionalEventHandler.isPresent()) {
+                    EventHandler nextEventHandler = optionalEventHandler.get();
+                    processEventRecursively(context, nextEventHandler).setHandler(future);
                 } else {
-                    context.setHandled(true);
-                    processEventRecursively(context).setHandler(future);
+                    future.complete(context);
                 }
-            });
-        } else {
-            future.complete(context);
-        }
+            }
+        });
         return future;
     }
 }
