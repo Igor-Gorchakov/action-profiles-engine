@@ -33,8 +33,7 @@ public class RecursiveEventProcessor implements EventProcessor {
                     future.fail(ar.cause());
                 } else {
                     context.setHandled(true);
-                    Context nextContext = ar.result();
-                    processEventRecursively(nextContext).setHandler(future);
+                    processEventRecursively(context).setHandler(future);
                 }
             });
         } else {
