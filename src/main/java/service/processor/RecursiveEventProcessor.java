@@ -16,8 +16,19 @@ public class RecursiveEventProcessor implements EventProcessor {
 
     @Override
     public Future<Context> process(Context context) {
-        context.setHandled(false);
-        return processEventRecursively(context);
+        Future<Context> future = Future.future();
+        String eventType = context.getEventType();
+        Optional<EventHandler> optionalEventHandler = eventHandlers.stream()
+                .filter(eventHandler -> eventHandler.getEventType().equals(eventType))
+                .findFirst();
+        if (optionalEventHandler.isPresent()) {
+            context.setHandled(true);
+            processEventRecursively(context).setHandler(future);
+        } else {
+            context.setHandled(false);
+            future.complete(context);
+        }
+        return future;
     }
 
     private Future<Context> processEventRecursively(Context context) {
