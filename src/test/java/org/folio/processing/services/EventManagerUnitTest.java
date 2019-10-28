@@ -5,7 +5,6 @@ import io.vertx.ext.unit.junit.VertxUnitRunner;
 import org.folio.processing.core.EventManager;
 import org.folio.processing.core.model.EventContext;
 import org.folio.processing.core.services.handler.EventHandler;
-import org.folio.processing.services.handlers.CreateMarccatInstanceEventHandler;
 import org.folio.processing.services.handlers.CreateHoldingsRecordEventHandler;
 import org.folio.processing.services.handlers.CreateInstanceEventHandler;
 import org.folio.processing.services.handlers.CreateItemRecordEventHandler;
@@ -20,7 +19,6 @@ public class EventManagerUnitTest {
   private EventHandler createInstanceEventHandler = new CreateInstanceEventHandler();
   private EventHandler createHoldingsRecordEventHandler = new CreateHoldingsRecordEventHandler();
   private EventHandler createItemRecordEventHandler = new CreateItemRecordEventHandler();
-  private EventHandler createMarccatInstanceEventHandler = new CreateMarccatInstanceEventHandler();
 
   @Test
   public void shouldHandleEvent(TestContext testContext) {
@@ -29,9 +27,8 @@ public class EventManagerUnitTest {
     eventManager.registerHandler(createInstanceEventHandler);
     eventManager.registerHandler(createHoldingsRecordEventHandler);
     eventManager.registerHandler(createItemRecordEventHandler);
-    eventManager.registerHandler(createMarccatInstanceEventHandler);
 
-    int expectedEventChainSize = 4;
+    int expectedEventChainSize = 3;
 
     EventContext eventContext = new EventContext();
     eventContext.setEventType("CREATED_SRS_MARC_BIB_RECORD");
@@ -44,9 +41,9 @@ public class EventManagerUnitTest {
       testContext.assertEquals(expectedEventChainSize, eventContext.getEventChain().size());
       testContext.assertEquals(
         eventContext.getEventChain(),
-        Arrays.asList("CREATED_SRS_MARC_BIB_RECORD", "CREATED_INVENTORY_INSTANCE", "CREATED_HOLDINGS_RECORD", "CREATED_ITEM_RECORD")
+        Arrays.asList("CREATED_SRS_MARC_BIB_RECORD", "CREATED_INVENTORY_INSTANCE", "CREATED_HOLDINGS_RECORD")
       );
-      testContext.assertEquals("CREATED_MARCCAT_INSTANCE", eventContext.getEventType());
+      testContext.assertEquals("CREATED_ITEM_RECORD", eventContext.getEventType());
     });
   }
 
