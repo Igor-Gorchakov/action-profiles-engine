@@ -9,19 +9,19 @@ import org.folio.processing.core.services.handler.EventHandler;
  */
 public interface EventProcessor {
 
-  /**
-   * Performs event processing
-   *
-   * @param context event context
-   * @return future with event context
-   */
-  Future<EventContext> process(EventContext context);
+    /**
+     * Performs event processing
+     *
+     * @param context event context
+     * @return future with event context
+     */
+    Future<EventContext> process(EventContext context);
 
-  /**
-   * Adds handler
-   *
-   * @param eventHandler event handler
-   * @return true if handler is registered
-   */
-  boolean addHandler(EventHandler eventHandler);
+    /**
+     * Adds handler
+     *
+     * @param eventHandler event handler
+     * @return true if handler is registered
+     */
+    boolean addHandler(EventHandler eventHandler);
 }

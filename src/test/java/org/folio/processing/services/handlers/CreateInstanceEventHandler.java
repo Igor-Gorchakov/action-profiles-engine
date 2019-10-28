@@ -7,21 +7,21 @@ import org.folio.processing.core.model.EventContext;
 import org.folio.processing.core.services.handler.AbstractEventHandler;
 
 public class CreateInstanceEventHandler extends AbstractEventHandler {
-  private final Logger LOGGER = LoggerFactory.getLogger(CreateInstanceEventHandler.class);
+    private final Logger LOGGER = LoggerFactory.getLogger(CreateInstanceEventHandler.class);
 
-  @Override
-  public Future<EventContext> handleContext(EventContext context) {
-    LOGGER.info("Handling event " + getHandlerEventType());
-    return Future.succeededFuture(context);
-  }
+    @Override
+    public Future<EventContext> handleContext(EventContext context) {
+        LOGGER.info("Handling event " + getHandlerEventType());
+        return Future.succeededFuture(context);
+    }
 
-  @Override
-  public String getHandlerEventType() {
-    return "CREATED_SRS_MARC_BIB_RECORD";
-  }
+    @Override
+    public String getHandlerEventType() {
+        return "CREATED_SRS_MARC_BIB_RECORD";
+    }
 
-  @Override
-  public String getTargetEventType() {
-    return "CREATED_INVENTORY_INSTANCE";
-  }
+    @Override
+    public String getTargetEventType() {
+        return "CREATED_INVENTORY_INSTANCE";
+    }
 }
