@@ -8,20 +8,20 @@ import org.folio.processing.core.model.EventContext;
  */
 public abstract class AbstractEventHandler implements EventHandler {
 
-  @Override
-  public Future<EventContext> handle(EventContext context) {
-    Future<EventContext> future = Future.future();
-    handleContext(context)
-      .compose(nextContext -> Future.succeededFuture(prepareForNextHandler(nextContext)))
-      .setHandler(future);
-    return future;
-  }
+    @Override
+    public Future<EventContext> handle(EventContext context) {
+        Future<EventContext> future = Future.future();
+        handleContext(context)
+                .compose(nextContext -> Future.succeededFuture(prepareForNextHandler(nextContext)))
+                .setHandler(future);
+        return future;
+    }
 
-  protected abstract Future<EventContext> handleContext(EventContext context);
+    protected abstract Future<EventContext> handleContext(EventContext context);
 
-  protected EventContext prepareForNextHandler(EventContext context) {
-    context.setEventType(getTargetEventType());
-    context.getEventChain().add(getHandlerEventType());
-    return context;
-  }
+    protected EventContext prepareForNextHandler(EventContext context) {
+        context.setEventType(getTargetEventType());
+        context.getEventChain().add(getHandlerEventType());
+        return context;
+    }
 }

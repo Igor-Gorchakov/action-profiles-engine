@@ -7,21 +7,21 @@ import org.folio.processing.core.model.EventContext;
 import org.folio.processing.core.services.handler.AbstractEventHandler;
 
 public class CreateItemRecordEventHandler extends AbstractEventHandler {
-  private final Logger LOGGER = LoggerFactory.getLogger(CreateItemRecordEventHandler.class);
+    private final Logger LOGGER = LoggerFactory.getLogger(CreateItemRecordEventHandler.class);
 
-  @Override
-  public Future<EventContext> handleContext(EventContext context) {
-    LOGGER.info("Handling event " + getHandlerEventType());
-    return Future.succeededFuture(context);
-  }
+    @Override
+    public Future<EventContext> handleContext(EventContext context) {
+        LOGGER.info("Handling event " + getHandlerEventType());
+        return Future.succeededFuture(context);
+    }
 
-  @Override
-  public String getHandlerEventType() {
-    return "CREATED_HOLDINGS_RECORD";
-  }
+    @Override
+    public String getHandlerEventType() {
+        return "CREATED_HOLDINGS_RECORD";
+    }
 
-  @Override
-  public String getTargetEventType() {
-    return "CREATED_ITEM_RECORD";
-  }
+    @Override
+    public String getTargetEventType() {
+        return "CREATED_ITEM_RECORD";
+    }
 }
