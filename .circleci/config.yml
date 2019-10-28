@@ -29,3 +29,6 @@ jobs:
       - run: mvn test
       - codecov/upload:
           file: target/code-coverage-report/jacoco.xml
+      - store_test_results:
+          path: target/test-results
+
