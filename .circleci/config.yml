@@ -2,7 +2,7 @@
 #
 # Check https://circleci.com/docs/2.0/language-java/ for more details
 #
-version: 2
+version: 2.1
 orbs:
 
   codecov: codecov/codecov@1.0.2
@@ -28,4 +28,4 @@ jobs:
       - checkout
       - run: mvn install
       - codecov/upload:
-          file: target/code-coverage-report/jacoco.xml
+          file: 'target/code-coverage-report/jacoco.xml'
